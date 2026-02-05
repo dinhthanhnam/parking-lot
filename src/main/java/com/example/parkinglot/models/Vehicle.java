@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,8 +25,7 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     VehicleType vehicleType;
 
-    @ManyToOne
-    @JoinColumn(name = "zone_id")
-    Zone zone;
+    @OneToMany(mappedBy = "vehicle")
+    List<ParkingTicket> parkingTickets;
 
 }

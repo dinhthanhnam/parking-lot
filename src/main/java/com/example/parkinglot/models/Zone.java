@@ -23,5 +23,5 @@ public class Zone {
     Integer occupiedSpots;
 
     @OneToMany(mappedBy = "zone")
-    List<Vehicle> vehicles;
+    List<ParkingTicket> parkingTickets;
 }
