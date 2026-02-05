@@ -7,6 +7,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Timer;
+
 @RestController
 @RequestMapping("api/v1/zones")
 public class ZoneController {
@@ -32,8 +35,26 @@ public class ZoneController {
         }
     }
 
+    @GetMapping("/stats")
+    public ResponseEntity<ApiResponse<List<ZoneSummaryResponse>>> getZoneStats() {
+        try {
+            long start = System.nanoTime();
+
+            ResponseEntity r = ResponseEntity
+                    .ok()
+                    .body(ApiResponse.success("Zone summaries fetched successfully", zoneService.getAllZoneSummariesV2()));
+            long durationNs = System.nanoTime() - start;
+            System.out.println("Zone stats v1 fetched in " + durationNs + " ns");
+            return r;
+        } catch (Exception e) {
+            return ResponseEntity
+                .status(400)
+                .body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
     @GetMapping
-    public ResponseEntity<ApiResponse<PageResponse<ZoneResponse>>> getPagedVehicles(
+    public ResponseEntity<ApiResponse<PageResponse<ZoneResponse>>> getPagedZones(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String sortBy,
@@ -43,7 +64,7 @@ public class ZoneController {
         try {
             return ResponseEntity
                 .ok()
-                .body(ApiResponse.success("Vehicles fetched successfully", zoneService.getPagedVehicles(page, size, sortBy, direction, keyword)));
+                .body(ApiResponse.success("Vehicles fetched successfully", zoneService.getPagedZone(page, size, sortBy, direction, keyword)));
         } catch (Exception e) {
             return ResponseEntity
                 .status(400)
