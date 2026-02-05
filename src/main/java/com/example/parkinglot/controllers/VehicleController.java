@@ -41,7 +41,7 @@ public class VehicleController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) Sort.Direction direction,
-            @RequestBody(required = false) String keyword
+            @RequestParam(required = false) String keyword
     ) {
         try {
             return ResponseEntity
